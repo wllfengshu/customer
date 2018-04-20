@@ -2,13 +2,54 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="app.wllfengshu.dao.CustomerDao" >
 
-  <select id="getCustomers" resultType="app.wllfengshu.entity.Customer" >
-    SELECT 
-        *
-    FROM 
-        customer c
-    WHERE 
-        c.username = #{username} AND c.password = #{password}
-  </select>
+	<resultMap id="customerList" type="app.wllfengshu.entity.Customer">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="sex" property="sex" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="address" property="address" />
+        <result column="user_id" property="user_id" />
+    </resultMap>
 
+	<select id="getCustomers" parameterType="string" resultMap="customerList" >
+		SELECT 
+			*
+		FROM 
+			customer c
+		WHERE 
+			c.user_id = #{user_id}
+	</select>
+
+	<insert id="addCustomer" parameterType="app.wllfengshu.entity.Customer">  
+        insert into 
+        	customer(id,name,sex,phone,email,address,user_id) 
+        values
+        	(#{customer.id},#{customer.name},#{customer.sex},#{customer.phone},#{customer.email},#{customer.address},#{customer.user_id})
+    </insert>
+
+	<select id="getCustomer" parameterType="String" resultType="app.wllfengshu.entity.Customer" >
+		SELECT 
+			*
+		FROM 
+			customer c
+		WHERE 
+			c.id = #{id}
+	</select>
+	
+	<update id="updateCustomer" parameterType="app.wllfengshu.entity.Customer" >  
+        update
+        	customer
+        set
+        	name = #{customer.name}, sex = #{customer.sex}, phone = #{customer.phone} , email = #{customer.email}, address = #{customer.address}
+        where
+        	id = #{customer.id}
+    </update>
+    
+    <delete id="deleteCustomer" parameterType="String">  
+        delete from
+        	customer
+        where 
+        	id = #{id}  
+    </delete>
 </mapper>

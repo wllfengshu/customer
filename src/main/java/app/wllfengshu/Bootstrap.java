@@ -11,7 +11,7 @@ public class Bootstrap {
 	public static void main(String[] args) {
 		ProtectionDomain domain = Bootstrap.class.getProtectionDomain();
 		URL location = domain.getCodeSource().getLocation();
-		Server server = new Server(8080);
+		Server server = new Server(7001);
 
 		WebAppContext webAppContext = new WebAppContext();
 		webAppContext.setWar( location.toExternalForm() );
@@ -21,7 +21,7 @@ public class Bootstrap {
 		server.setHandler(webAppContext);
 		try {
 			server.start();
-			System.out.println("server is starting,port:8080");
+			System.out.println("server is starting,port:7001");
 			server.join();
 		} catch (Exception e) {
 			e.printStackTrace();

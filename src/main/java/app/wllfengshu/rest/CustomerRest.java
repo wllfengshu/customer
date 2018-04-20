@@ -2,12 +2,13 @@ package app.wllfengshu.rest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -16,82 +17,147 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import app.wllfengshu.service.CustomerService;
+import app.wllfengshu.util.LogUtils;
 
 @Controller
 @Path("/customer")
 public class CustomerRest {
+	
 	@Autowired
 	private CustomerService customerService ;
     
 	/**
 	 * @title 查询所有顾客信息
+	 * @param sessionId
 	 * @param request
 	 * @param response
 	 * @return
 	 */
     @GET
-    public Response getCustomers(@QueryParam("username")String username,@QueryParam("password")String password) {
-		System.out.println("***rest"+username+password);
-		String responseStr = customerService.getCustomers(username,password);
+    public Response getCustomers(@HeaderParam(value="sessionid") String sessionId,
+    		@Context HttpServletRequest request,@Context HttpServletResponse response) {
+		String responseStr = null;
+		try{
+			responseStr=customerService.getCustomers(sessionId);
+		}catch (SecurityException e) {
+			LogUtils.error(this, e, "# CustomerRest-getCustomers,has SecurityException #");
+			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		} catch (Exception e) {
+			System.out.println(e);
+			LogUtils.error(this, e, "# CustomerRest-getCustomers,has exception #");
+			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		}
 		return Response.ok(responseStr, MediaType.APPLICATION_JSON)
         		.status(200).build();
     }
     
     /**
      * @title 添加顾客信息
+     * @param customer 顾客信息数据
+     * @param sessionId
      * @param request
      * @param response
      * @return
      */
     @POST
-    public Response addCustomer() {
-		System.out.println("***rest");	
-		String responseStr = customerService.addCustomer();
+    public Response addCustomer(String customer,
+    		@HeaderParam(value="sessionid") String sessionId,
+    		@Context HttpServletRequest request,@Context HttpServletResponse response) {
+		String responseStr = null;
+		try{
+			responseStr=customerService.addCustomer(customer,sessionId);
+		}catch (SecurityException e) {
+			LogUtils.error(this, e, "# CustomerRest-addCustomer,has SecurityException #");
+			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		} catch (Exception e) {
+			System.out.println(e);
+			LogUtils.error(this, e, "# CustomerRest-addCustomer,has exception #");
+			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		}
 		return Response.ok(responseStr, MediaType.APPLICATION_JSON)
         		.status(200).build();
     }
     
     /**
      * @title 查询顾客详情
+     * @param customer_id 顾客ID
+     * @param sessionId
      * @param request
      * @param response
      * @return
      */
     @GET
     @Path("/{customer_id}/")
-    public Response getCustomer(@Context HttpServletRequest request,@Context HttpServletResponse response) {
-		System.out.println("***rest");	
-		String responseStr = customerService.getCustomer();
+    public Response getCustomer(@PathParam("customer_id")String customer_id,
+    		@HeaderParam(value="sessionid") String sessionId,
+    		@Context HttpServletRequest request,@Context HttpServletResponse response) {
+		String responseStr = null;
+		try{
+			responseStr=customerService.getCustomer(customer_id,sessionId);
+		}catch (SecurityException e) {
+			LogUtils.error(this, e, "# CustomerRest-getCustomer,has SecurityException #");
+			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		} catch (Exception e) {
+			System.out.println(e);
+			LogUtils.error(this, e, "# CustomerRest-getCustomer,has exception #");
+			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		}
 		return Response.ok(responseStr, MediaType.APPLICATION_JSON)
         		.status(200).build();
     }
     
     /**
      * @title 修改顾客信息
+     * @param customer 顾客信息数据
+     * @param sessionId
      * @param request
      * @param response
      * @return
      */
     @PUT
     @Path("/{customer_id}/")
-    public Response updateCustomer(@Context HttpServletRequest request,@Context HttpServletResponse response) {
-		System.out.println("***rest");	
-		String responseStr = customerService.updateCustomer();
+    public Response updateCustomer(String customer,
+    		@HeaderParam(value="sessionid") String sessionId,
+    		@Context HttpServletRequest request,@Context HttpServletResponse response) {
+		String responseStr = null;
+		try{
+			responseStr=customerService.updateCustomer(customer,sessionId);//前端的customer中必须包含customer_id
+		}catch (SecurityException e) {
+			LogUtils.error(this, e, "# CustomerRest-updateCustomer,has SecurityException #");
+			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		} catch (Exception e) {
+			System.out.println(e);
+			LogUtils.error(this, e, "# CustomerRest-updateCustomer,has exception #");
+			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		}
 		return Response.ok(responseStr, MediaType.APPLICATION_JSON)
         		.status(200).build();
     }
     
     /**
      * @title 删除顾客信息
+     * @param customer_id 顾客ID
+     * @param sessionId
      * @param request
      * @param response
      * @return
      */
     @DELETE
     @Path("/{customer_id}/")
-    public Response deleteCustomer(@Context HttpServletRequest request,@Context HttpServletResponse response) {
-		System.out.println("***rest");	
-		String responseStr = customerService.deleteCustomer();
+    public Response deleteCustomer(@PathParam("customer_id")String customer_id,
+    		@HeaderParam(value="sessionid") String sessionId,
+    		@Context HttpServletRequest request,@Context HttpServletResponse response) {
+		String responseStr = null;
+		try{
+			responseStr=customerService.deleteCustomer(customer_id,sessionId);
+		}catch (SecurityException e) {
+			LogUtils.error(this, e, "# CustomerRest-deleteCustomer,has SecurityException #");
+			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		} catch (Exception e) {
+			System.out.println(e);
+			LogUtils.error(this, e, "# CustomerRest-deleteCustomer,has exception #");
+			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		}
 		return Response.ok(responseStr, MediaType.APPLICATION_JSON)
         		.status(200).build();
     }

@@ -1,15 +1,17 @@
 package app.wllfengshu.service;
 
+import app.wllfengshu.exception.NotAcceptableException;
+
 public interface CustomerService {
 	
-	public String getCustomers(String username,String password);
+	public String getCustomers(String sessionId) throws NotAcceptableException;
 
-	public String addCustomer();
+	public String addCustomer(String customer,String sessionId) throws NotAcceptableException;
 
-	public String getCustomer();
+	public String getCustomer(String customer_id,String sessionId) throws NotAcceptableException;
 
-	public String updateCustomer();
+	public String updateCustomer(String customer,String sessionId) throws NotAcceptableException;
 
-	public String deleteCustomer();
+	public String deleteCustomer(String customer_id,String sessionId) throws NotAcceptableException;
 	
 }

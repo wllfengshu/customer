@@ -1,5 +1,7 @@
 package app.wllfengshu.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -7,14 +9,14 @@ import app.wllfengshu.entity.Customer;
 
 @Repository
 public interface CustomerDao {
-	public Customer getCustomers(@Param("username")String username,@Param("password")String password);
+	public List<Customer> getCustomers(@Param("user_id")String user_id);
 
-	public String addCustomer();
+	public void addCustomer(@Param("customer")Customer customer);
 
-	public String getCustomer();
+	public Customer getCustomer(@Param("id")String id);
 
-	public String updateCustomer();
+	public void updateCustomer(@Param("customer")Customer customer);
 
-	public String deleteCustomer();
+	public void deleteCustomer( @Param("id")String id);
 	
 }
