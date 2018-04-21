@@ -16,14 +16,14 @@
 		SELECT 
 			*
 		FROM 
-			customer c
+			t_customer c
 		WHERE 
 			c.user_id = #{user_id}
 	</select>
 
 	<insert id="addCustomer" parameterType="app.wllfengshu.entity.Customer">  
         insert into 
-        	customer(id,name,sex,phone,email,address,user_id) 
+        	t_customer(id,name,sex,phone,email,address,user_id) 
         values
         	(#{customer.id},#{customer.name},#{customer.sex},#{customer.phone},#{customer.email},#{customer.address},#{customer.user_id})
     </insert>
@@ -32,14 +32,14 @@
 		SELECT 
 			*
 		FROM 
-			customer c
+			t_customer c
 		WHERE 
 			c.id = #{id}
 	</select>
 	
 	<update id="updateCustomer" parameterType="app.wllfengshu.entity.Customer" >  
         update
-        	customer
+        	t_customer
         set
         	name = #{customer.name}, sex = #{customer.sex}, phone = #{customer.phone} , email = #{customer.email}, address = #{customer.address}
         where
@@ -48,7 +48,7 @@
     
     <delete id="deleteCustomer" parameterType="String">  
         delete from
-        	customer
+        	t_customer
         where 
         	id = #{id}  
     </delete>

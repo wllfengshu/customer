@@ -25,12 +25,9 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerDao customerDao;
 	
 	@Override
-	public String getCustomers(String sessionId) throws NotAcceptableException {
+	public String getCustomers(String sessionId,String user_id) throws NotAcceptableException {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
-		String user_id = AuthUtil.instance.getCurrentUserIdBySessionId(sessionId);
-		if (null==user_id || "".equals(user_id)) {
-			throw new NotAcceptableException("没有权限");
-		}
+		AuthUtil.instance.checkUserInfo(sessionId, user_id);
 		List<Customer> customers = customerDao.getCustomers(user_id);
 		responseMap.put("data", customers);
 		responseMap.put("count", customers.size());
@@ -39,13 +36,10 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	@Override
-	public String addCustomer(String customer,String sessionId) throws NotAcceptableException {
+	public String addCustomer(String customer,String sessionId,String user_id) throws NotAcceptableException {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		String customer_id = UUID.randomUUID().toString();
-		String user_id = AuthUtil.instance.getCurrentUserIdBySessionId(sessionId);
-		if (null==user_id || "".equals(user_id)) {
-			throw new NotAcceptableException("没有权限");
-		}
+		AuthUtil.instance.checkUserInfo(sessionId, user_id);
 		JSONObject customerJson = null;
 		Customer customerTemp=null;
 		try{
@@ -62,12 +56,9 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	@Override
-	public String getCustomer(String customer_id,String sessionId) throws NotAcceptableException {
+	public String getCustomer(String customer_id,String sessionId,String user_id) throws NotAcceptableException {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
-		String user_id = AuthUtil.instance.getCurrentUserIdBySessionId(sessionId);
-		if (null==user_id || "".equals(user_id)) {
-			throw new NotAcceptableException("没有权限");
-		}
+		AuthUtil.instance.checkUserInfo(sessionId, user_id);
 		Customer customer = customerDao.getCustomer(customer_id);
 		responseMap.put("data", customer);
 		responseMap.put("count", 1);
@@ -76,12 +67,9 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	@Override
-	public String updateCustomer(String customer,String sessionId) throws NotAcceptableException {
+	public String updateCustomer(String customer,String sessionId,String user_id) throws NotAcceptableException {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
-		String user_id = AuthUtil.instance.getCurrentUserIdBySessionId(sessionId);
-		if (null==user_id || "".equals(user_id)) {
-			throw new NotAcceptableException("没有权限");
-		}
+		AuthUtil.instance.checkUserInfo(sessionId, user_id);
 		JSONObject customerJson = null;
 		Customer customerTemp=null;
 		try{
@@ -96,12 +84,9 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	@Override
-	public String deleteCustomer(String customer_id,String sessionId) throws NotAcceptableException {
+	public String deleteCustomer(String customer_id,String sessionId,String user_id) throws NotAcceptableException {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
-		String user_id = AuthUtil.instance.getCurrentUserIdBySessionId(sessionId);
-		if (null==user_id || "".equals(user_id)) {
-			throw new NotAcceptableException("没有权限");
-		}
+		AuthUtil.instance.checkUserInfo(sessionId, user_id);
 		customerDao.deleteCustomer(customer_id);
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 		return gson.toJson(responseMap);

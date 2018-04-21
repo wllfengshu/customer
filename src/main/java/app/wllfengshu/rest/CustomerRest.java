@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import app.wllfengshu.exception.NotAcceptableException;
 import app.wllfengshu.service.CustomerService;
 import app.wllfengshu.util.LogUtils;
 
@@ -35,14 +36,15 @@ public class CustomerRest {
 	 */
     @GET
     public Response getCustomers(@HeaderParam(value="sessionId") String sessionId,
+    		@HeaderParam(value="user_id") String user_id,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=customerService.getCustomers(sessionId);
-		}catch (SecurityException e) {
-			LogUtils.error(this, e, "# CustomerRest-getCustomers,has SecurityException #");
-			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
-		} catch (Exception e) {
+			responseStr=customerService.getCustomers(sessionId,user_id);
+		}catch (NotAcceptableException e) {
+			System.out.println(e);
+			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();
+		}catch (Exception e) {
 			System.out.println(e);
 			LogUtils.error(this, e, "# CustomerRest-getCustomers,has exception #");
 			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
@@ -62,14 +64,15 @@ public class CustomerRest {
     @POST
     public Response addCustomer(String customer,
     		@HeaderParam(value="sessionId") String sessionId,
+    		@HeaderParam(value="user_id") String user_id,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=customerService.addCustomer(customer,sessionId);
-		}catch (SecurityException e) {
-			LogUtils.error(this, e, "# CustomerRest-addCustomer,has SecurityException #");
-			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
-		} catch (Exception e) {
+			responseStr=customerService.addCustomer(customer,sessionId,user_id);
+		}catch (NotAcceptableException e) {
+			System.out.println(e);
+			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();
+		}catch (Exception e) {
 			System.out.println(e);
 			LogUtils.error(this, e, "# CustomerRest-addCustomer,has exception #");
 			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
@@ -90,14 +93,15 @@ public class CustomerRest {
     @Path("/{customer_id}/")
     public Response getCustomer(@PathParam("customer_id")String customer_id,
     		@HeaderParam(value="sessionId") String sessionId,
+    		@HeaderParam(value="user_id") String user_id,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=customerService.getCustomer(customer_id,sessionId);
-		}catch (SecurityException e) {
-			LogUtils.error(this, e, "# CustomerRest-getCustomer,has SecurityException #");
-			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
-		} catch (Exception e) {
+			responseStr=customerService.getCustomer(customer_id,sessionId,user_id);
+		}catch (NotAcceptableException e) {
+			System.out.println(e);
+			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();
+		}catch (Exception e) {
 			System.out.println(e);
 			LogUtils.error(this, e, "# CustomerRest-getCustomer,has exception #");
 			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
@@ -118,14 +122,15 @@ public class CustomerRest {
     @Path("/{customer_id}/")
     public Response updateCustomer(String customer,
     		@HeaderParam(value="sessionId") String sessionId,
+    		@HeaderParam(value="user_id") String user_id,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=customerService.updateCustomer(customer,sessionId);//前端的customer中必须包含customer_id
-		}catch (SecurityException e) {
-			LogUtils.error(this, e, "# CustomerRest-updateCustomer,has SecurityException #");
-			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
-		} catch (Exception e) {
+			responseStr=customerService.updateCustomer(customer,sessionId,user_id);//前端的customer中必须包含customer_id
+		}catch (NotAcceptableException e) {
+			System.out.println(e);
+			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();
+		}catch (Exception e) {
 			System.out.println(e);
 			LogUtils.error(this, e, "# CustomerRest-updateCustomer,has exception #");
 			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
@@ -146,14 +151,15 @@ public class CustomerRest {
     @Path("/{customer_id}/")
     public Response deleteCustomer(@PathParam("customer_id")String customer_id,
     		@HeaderParam(value="sessionId") String sessionId,
+    		@HeaderParam(value="user_id") String user_id,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=customerService.deleteCustomer(customer_id,sessionId);
-		}catch (SecurityException e) {
-			LogUtils.error(this, e, "# CustomerRest-deleteCustomer,has SecurityException #");
-			return Response.serverError().entity("{\"message\":\"has SecurityException exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
-		} catch (Exception e) {
+			responseStr=customerService.deleteCustomer(customer_id,sessionId,user_id);
+		}catch (NotAcceptableException e) {
+			System.out.println(e);
+			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();
+		}catch (Exception e) {
 			System.out.println(e);
 			LogUtils.error(this, e, "# CustomerRest-deleteCustomer,has exception #");
 			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();

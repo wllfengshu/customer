@@ -8,8 +8,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 
-import com.google.gson.Gson;
-
+import app.wllfengshu.exception.NotAcceptableException;
 import net.sf.json.JSONObject;
 
 public enum AuthUtil {
@@ -18,26 +17,24 @@ public enum AuthUtil {
 	 */
 	instance;
 	
-	public String getCurrentUserBySessionId(String sessionId){
-		String user = getUsersBySession(sessionId);
-		return user;
-	}
-	
-	public String getCurrentUserIdBySessionId(String sessionId){
-		String user = getCurrentUserBySessionId(sessionId);
-		JSONObject userJson = null;
-		String user_id=null;
-		if(null!=user && !"".equals(user)){
-			userJson = JSONObject.fromObject(user);
-			user_id = userJson.getString("id");
+	/**
+	 * @throws NotAcceptableException 
+	 * @title 检查user信息
+	 */
+	public void checkUserInfo(String sessionId,String user_id) throws NotAcceptableException{
+		Object userAllInfo = getUsersAllInfo(sessionId,user_id);
+		if (null==userAllInfo || "".equals(userAllInfo)) {
+			throw new NotAcceptableException("没有权限");
 		}
-		return user_id;
 	}
 	
-	private String getUsersBySession(String sessionId){
+	/*
+	 * @title 获取user所有信息
+	 */
+	private Object getUsersAllInfo(String sessionId,String user_id){
 		long beginTime=System.currentTimeMillis();
 		String security_base_url="http://127.0.0.1:9001/";
-		String url = security_base_url+"security/user";
+		String url = security_base_url+"security/user/"+user_id;
 		Response res=null;
 		try {
 			res = Request.Get(url).setHeader("sessionId", sessionId).execute();
@@ -53,12 +50,15 @@ public enum AuthUtil {
 			if(statusCode>300){
 				throw new SecurityException(logStr);
 			}
-			String user=new Gson().fromJson(responseStr, String.class);
-			return user;
+			JSONObject userInfo = JSONObject.fromObject(responseStr);
+			return userInfo.get("data");
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
