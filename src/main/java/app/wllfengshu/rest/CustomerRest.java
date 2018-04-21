@@ -34,7 +34,7 @@ public class CustomerRest {
 	 * @return
 	 */
     @GET
-    public Response getCustomers(@HeaderParam(value="sessionid") String sessionId,
+    public Response getCustomers(@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
@@ -61,7 +61,7 @@ public class CustomerRest {
      */
     @POST
     public Response addCustomer(String customer,
-    		@HeaderParam(value="sessionid") String sessionId,
+    		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
@@ -89,7 +89,7 @@ public class CustomerRest {
     @GET
     @Path("/{customer_id}/")
     public Response getCustomer(@PathParam("customer_id")String customer_id,
-    		@HeaderParam(value="sessionid") String sessionId,
+    		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
@@ -117,7 +117,7 @@ public class CustomerRest {
     @PUT
     @Path("/{customer_id}/")
     public Response updateCustomer(String customer,
-    		@HeaderParam(value="sessionid") String sessionId,
+    		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
@@ -145,7 +145,7 @@ public class CustomerRest {
     @DELETE
     @Path("/{customer_id}/")
     public Response deleteCustomer(@PathParam("customer_id")String customer_id,
-    		@HeaderParam(value="sessionid") String sessionId,
+    		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
