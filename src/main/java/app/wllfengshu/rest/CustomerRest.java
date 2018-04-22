@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,10 +38,11 @@ public class CustomerRest {
     @GET
     public Response getCustomers(@HeaderParam(value="sessionId") String sessionId,
     		@HeaderParam(value="user_id") String user_id,
+    		@QueryParam("pageNo") int pageNo,@QueryParam("pageSize") int pageSize,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=customerService.getCustomers(sessionId,user_id);
+			responseStr=customerService.getCustomers(sessionId,user_id,pageNo,pageSize);
 		}catch (NotAcceptableException e) {
 			System.out.println(e);
 			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();

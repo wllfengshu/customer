@@ -25,10 +25,10 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerDao customerDao;
 	
 	@Override
-	public String getCustomers(String sessionId,String user_id) throws NotAcceptableException {
+	public String getCustomers(String sessionId,String user_id, int pageNo, int pageSize) throws NotAcceptableException {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		AuthUtil.instance.checkUserInfo(sessionId, user_id);
-		List<Customer> customers = customerDao.getCustomers(user_id);
+		List<Customer> customers = customerDao.getCustomers(user_id,pageNo,pageSize);
 		responseMap.put("data", customers);
 		responseMap.put("count", customers.size());
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));

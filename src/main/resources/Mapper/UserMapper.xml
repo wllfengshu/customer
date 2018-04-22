@@ -12,7 +12,7 @@
         <result column="user_id" property="user_id" />
     </resultMap>
 
-	<select id="getCustomers" parameterType="string" resultMap="customerList" >
+	<select id="getCustomers" resultMap="customerList" >
 		SELECT 
 			*
 		FROM 
