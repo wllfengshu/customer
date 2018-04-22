@@ -61,7 +61,6 @@ public class CustomerServiceImpl implements CustomerService {
 		AuthUtil.instance.checkUserInfo(sessionId, user_id);
 		Customer customer = customerDao.getCustomer(customer_id);
 		responseMap.put("data", customer);
-		responseMap.put("count", 1);
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 		return gson.toJson(responseMap);
 	}
