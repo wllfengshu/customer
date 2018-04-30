@@ -19,13 +19,18 @@
 			t_customer c
 		WHERE 
 			c.user_id = #{user_id}
+			<if test="!name.equals('')">AND c.name=#{name} </if>
+			<if test="!phone.equals('')">AND c.phone=#{phone} </if>
+			<if test="!email.equals('')">AND c.email=#{email} </if>
+			ORDER BY c.create_time desc 
+			LIMIT #{pageStart} ,#{pageEnd} 
 	</select>
 
 	<insert id="addCustomer" parameterType="app.wllfengshu.entity.Customer">  
         insert into 
-        	t_customer(id,name,sex,phone,email,address,user_id) 
+        	t_customer(id,name,sex,phone,email,address,create_time,user_id) 
         values
-        	(#{customer.id},#{customer.name},#{customer.sex},#{customer.phone},#{customer.email},#{customer.address},#{customer.user_id})
+        	(#{customer.id},#{customer.name},#{customer.sex},#{customer.phone},#{customer.email},#{customer.address},#{customer.create_time},#{customer.user_id})
     </insert>
 
 	<select id="getCustomer" parameterType="String" resultType="app.wllfengshu.entity.Customer" >

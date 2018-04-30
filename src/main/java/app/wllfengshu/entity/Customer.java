@@ -7,6 +7,7 @@ public class Customer {
 	private String phone;
 	private String email;
 	private String address;
+	private String create_time;
 	private String user_id;
 	
 	public String getId() {
@@ -56,6 +57,12 @@ public class Customer {
 	public String toString() {
 		return "Customer [id=" + id + ", name=" + name + ", sex=" + sex + ", phone=" + phone + ", email=" + email
 				+ ", address=" + address + ", user_id=" + user_id + "]";
+	}
+	public String getCreate_time() {
+		return create_time;
+	}
+	public void setCreate_time(String create_time) {
+		this.create_time = create_time;
 	}
 	
 }

@@ -36,13 +36,17 @@ public class CustomerRest {
 	 * @return
 	 */
     @GET
-    public Response getCustomers(@HeaderParam(value="sessionId") String sessionId,
+    public Response getCustomers(
+    		@HeaderParam(value="sessionId") String sessionId,
     		@HeaderParam(value="user_id") String user_id,
+    		@QueryParam("name") String name,
+    		@QueryParam("phone") String phone,
+    		@QueryParam("email") String email,
     		@QueryParam("pageNo") int pageNo,@QueryParam("pageSize") int pageSize,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=customerService.getCustomers(sessionId,user_id,pageNo,pageSize);
+			responseStr=customerService.getCustomers(sessionId,user_id,name,phone,email,pageNo,pageSize);
 		}catch (NotAcceptableException e) {
 			System.out.println(e);
 			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();

@@ -9,7 +9,13 @@ import app.wllfengshu.entity.Customer;
 
 @Repository
 public interface CustomerDao {
-	public List<Customer> getCustomers(@Param("user_id")String user_id, int pageNo, int pageSize);
+	public List<Customer> getCustomers(
+			@Param("user_id")String user_id,
+			@Param("name")String name, 
+			@Param("phone")String phone, 
+			@Param("email")String email, 
+			@Param("pageStart")int pageStart, 
+			@Param("pageEnd")int pageEnd);
 
 	public void addCustomer(@Param("customer")Customer customer);
 
