@@ -17,6 +17,12 @@ public interface CustomerDao {
 			@Param("pageStart")int pageStart, 
 			@Param("pageEnd")int pageEnd);
 
+	public int getCount(
+			@Param("user_id")String user_id,
+			@Param("name")String name, 
+			@Param("phone")String phone, 
+			@Param("email")String email);
+	
 	public void addCustomer(@Param("customer")Customer customer);
 
 	public Customer getCustomer(@Param("id")String id);

@@ -33,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
 		AuthUtil.instance.checkUserInfo(sessionId, user_id);
 		List<Customer> customers = customerDao.getCustomers(user_id,name,phone,email,(pageNo-1)*pageSize,pageSize);
 		responseMap.put("data", customers);
-		responseMap.put("count", customers.size());
+		responseMap.put("count", customerDao.getCount(user_id, name, phone, email));
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 		return gson.toJson(responseMap);
 	}
