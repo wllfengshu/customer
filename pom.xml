@@ -4,7 +4,7 @@
   <groupId>app.wllfengshu</groupId>
   <artifactId>customer</artifactId>
   <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version> 
   <name>customer Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <properties>
